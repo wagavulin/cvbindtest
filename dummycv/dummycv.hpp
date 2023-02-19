@@ -37,9 +37,10 @@
 namespace cv {
 class CV_EXPORTS_W Foo {
 public:
-    Foo() { PRINT_CXXFUNC(); }
+    CV_WRAP Foo() { PRINT_CXXFUNC(); }
+    CV_WRAP Foo(int value1) : m_value1(value1) { PRINT_CXXFUNC(); }
     ~Foo() { PRINT_CXXFUNC(); }
-    void method1(int a) {
+    CV_WRAP void method1(int a) {
         printf("[%s] %d\n", __func__, m_value1 + a);
     }
     int m_value1{123};
