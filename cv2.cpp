@@ -1,14 +1,11 @@
 #include <ruby.h>
-#include <dummycv.hpp>
 
 #define PRINT_FUNC() fprintf(stderr, "[%s]\n", __func__)
 #define PRINT_CXXFUNC() fprintf(stderr, "[CXX %s]\n", __func__)
 
+#include "autogen/rbopencv_include.hpp"
 using namespace cv;
-
 static VALUE mCV2;
-
-#include "dummycv/dummycv.hpp"
 #include "autogen/rbopencv_classdef.hpp"
 
 extern "C" {

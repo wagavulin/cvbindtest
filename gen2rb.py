@@ -108,6 +108,8 @@ def gen(headers:list[str], out_dir:str):
         out_json_path = f"tmp-{hdr_stem}.json"
         with open(out_json_path, "w") as f:
             json.dump(decls, f, indent=2)
+        with open("./autogen/rbopencv_include.hpp", "w") as f:
+            f.write(f'#include "{hdr}"\n')
         for decl in decls:
             # for i in range(len(decl)):
             #     if i == 3:
