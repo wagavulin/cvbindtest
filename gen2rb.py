@@ -170,8 +170,8 @@ def gen(headers:list[str], out_dir:str):
     classlist1 = [(classinfo.decl_idx, name, classinfo) for name, classinfo in classlist]
     classlist1.sort()
 
-    # gen classdef
-    with open("./autogen/rbopencv_classdef.hpp", "w") as f:
+    # gen wrapclass
+    with open("./autogen/rbopencv_wrapclass.hpp", "w") as f:
         for decl_idx, name, classinfo in classlist1:
             cClass = f"c{name}" # cFoo
             wrap_struct = f" struct Wrap_{name}" # struct WrapFoo
@@ -204,6 +204,18 @@ def gen(headers:list[str], out_dir:str):
             f.write(f"static VALUE wrap_{name}_init(VALUE self){{\n")
             f.write(f"    return Qnil;\n")
             f.write(f"}}\n")
+    # gen class registration
+    with open("./autogen/rbopencv_classregistration.hpp", "w") as f:
+        for decl_idx, name, classinfo in classlist1:
+            cClass = f"c{name}" # cFoo
+            wrap_struct = f" struct Wrap_{name}" # struct WrapFoo
+            classtype = f"{name}_type"
+            f.write(f"{{\n")
+            f.write(f"    {cClass} = rb_define_class_under(mCV2, \"{name}\", rb_cObject);\n")
+            f.write(f"    rb_define_alloc_func({cClass}, wrap_{name}_alloc);\n")
+            f.write(f"    rb_define_private_method({cClass}, \"initialize\", RUBY_METHOD_FUNC(wrap_{name}_init), 0);\n")
+            f.write(f"}}\n")
+
 
 headers_txt = "./headers.txt"
 if len(sys.argv) == 2:
